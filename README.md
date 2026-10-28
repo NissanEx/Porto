@@ -3,7 +3,8 @@
 A highly interactive, minimalist portfolio website designed to showcase creative development and UI/UX skills. The design blends monochrome editorial typography with advanced micro-interactions and physics-based animations.
 
 ![Portfolio Preview](https://via.placeholder.com/1200x600?text=Portfolio+Preview) 
-<!-- Ganti link di atas dengan screenshot portofolio Anda -->
+<!-- Ganti link di atas dengan screenshot portofolio Anda -->![Uploading Screenshot from 2026-10-29 03-40-29.png…]()
+
 
 ## ✨ Key Features
 
