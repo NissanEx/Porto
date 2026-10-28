@@ -2,8 +2,14 @@
 
 A highly interactive, minimalist portfolio website designed to showcase creative development and UI/UX skills. The design blends monochrome editorial typography with advanced micro-interactions and physics-based animations.
 
-![Portfolio Preview](https://via.placeholder.com/1200x600?text=Portfolio+Preview) 
-<!-- Ganti link di atas dengan screenshot portofolio Anda -->![Uploading Screenshot from 2026-10-29 03-40-29.png…]()
+Preview :
+
+<img width="1842" height="1080" alt="Screenshot from 2026-10-29 03-40-29" src="https://github.com/user-attachments/assets/cd6f3dcd-7202-4a84-867d-147a866c14c5" />
+<img width="1919" height="1080" alt="Screenshot from 2026-10-29 03-46-34" src="https://github.com/user-attachments/assets/76871cd6-4fcc-46c4-94a3-faee1f40982f" />
+<img width="1919" height="1080" alt="Screenshot from 2026-10-29 03-47-06" src="https://github.com/user-attachments/assets/f52cc122-11ef-41d2-a7f6-51d39b402f3b" />
+<img width="1919" height="1080" alt="Screenshot from 2026-10-29 03-47-34" src="https://github.com/user-attachments/assets/849f737c-0118-4201-982b-3b01d65f0ff6" />
+<img width="1919" height="1080" alt="Screenshot from 2026-10-29 03-47-40" src="https://github.com/user-attachments/assets/6aab8370-6276-4a1d-bfc7-a69b03fb49c2" />
+<img width="1919" height="1080" alt="Screenshot from 2026-10-29 03-47-51" src="https://github.com/user-attachments/assets/56745520-0da6-424d-a53a-d1f75cf65072" />
 
 
 ## ✨ Key Features
