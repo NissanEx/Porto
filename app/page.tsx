@@ -18,24 +18,29 @@ const NodeGraph = dynamic(() => import("@/components/NodeGraph"), {
 import { motion, Variants, AnimatePresence } from "framer-motion"; 
 import { 
   Layers, 
-  Search, 
   MessageCircle, 
   Globe, 
   Send, 
   Mail, 
-   ArrowUpRight,
-  Pencil, 
   X, 
-  Check, 
-  Maximize2, 
-  Scaling,     // <-- TAMBAHKAN KOMA DI SINI
-  Lightbulb,   // Untuk Discovery
-  PenTool,     // Untuk Design
-  Code2,       // Untuk Develop
-  Rocket,      // Untuk Deliver
-  CheckCircle2 // Untuk Komitmen
+  Check,
+ ArrowUpRight,
+  Scaling,
+  // Section 4 (versi lama)
+  Lightbulb,
+  PenTool,
+  Code2,
+  Rocket,
+  CheckCircle2,
+  // Section 5 (PROJECTS)
+  BookOpen,
+  Library,
+  Gamepad2,
+  Landmark,
+  GitBranch,
+  ExternalLink,
+  BarChart3,
 } from "lucide-react";
-
 // Variabel Animasi
 const fadeInUp: Variants = {
   hidden: { opacity: 0, y: 40 },
@@ -62,36 +67,76 @@ const staggerContainer: Variants = {
 const PROJECTS = [
   {
     id: "p1",
-    title: "Intellectual\nRigour",
-    description: "We believe in the power of deep thinking and insightful judgement. We apply our expertise and knowledge to solve complex issues with a long-term vision.",
-    icon: "circle-thick",
+    title: "Leeyah\nAI",
+    description: "An academic journal search engine paired with a research notebook. Built with Next.js, Supabase, and TipTap.",
+    icon: BookOpen,
+    repo: "https://github.com/NissanEx/leeyah-ai", // GANTI
   },
   {
     id: "p2",
-    title: "Courageous\nCreativity",
-    description: "We believe that transformation takes courage to make ideas a reality. We are the doers, the bold leaders, disruptors and innovators doing things differently.",
-    icon: "sun",
+    title: "Komiknet\nComic Reader",
+    description: "A comic reading website powered by the MangaDex API, built with Next.js and deployed on Cloudflare.",
+    icon: Library,
+    repo: "https://github.com/NissanEx/komiknet", // GANTI
   },
   {
     id: "p3",
-    title: "Catalytic\nCollaboration",
-    description: "We believe in connecting diverse thinkers to create breakthrough ideas. Real systemic change can only be achieved by joining forces and forging new paths together.",
-    icon: "cluster",
+    title: "HindieGame\n2D RPG",
+    description: "A 2D RPG made in Godot 4.5 with school life, quests, and an algebra quiz mechanic.",
+    icon: Gamepad2,
+    repo: "https://github.com/NissanEx/HindieGame", // GANTI
   },
   {
     id: "p4",
-    title: "Relentless\nTenacity",
-    description: "We believe in the dedicated and determined pursuit of a goal. We combine the perseverance, resilience and grit to get us there.",
-    icon: "dots",
+    title: "Public Sentiment\nAnalysis",
+    description: "A sentiment analysis of social media conversations about government programs and performance. Data is scraped from Facebook, Instagram, TikTok, and X, then classified as positive, neutral, or negative.",
+    icon: BarChart3,
+    repo: "https://github.com/NissanEx/analisa-kinerja-prabowo",
   },
   {
     id: "p5",
-    title: "Thoughtful\nTransformation",
-    description: "We believe our impact must be significant and measurable, directly tied to outcomes. We manifest our leadership through our exemplary, ethical behaviours and business.",
-    icon: "circle-open",
+    title: "ExSan\nVillage Platform",
+    description: "A web system for the Kalumbatan village government, built to make village administration more accessible.",
+    icon: Landmark,
+    repo: "https://github.com/NissanEx/exsan", // GANTI
   },
 ];
+const WORK_PROCESS = [
+  {
+    id: "w1",
+    phase: "PHASE 01",
+    title: "Discovery",
+    description: "Mendengarkan ide, memahami visi, dan menganalisis kebutuhan bisnis Anda sebelum menyentuh baris kode pertama.",
+    checklist: "Riset & Analisis",
+    iconType: "bulb"
+  },
+  {
+    id: "w2",
+    phase: "PHASE 02",
+    title: "Design",
+    description: "Merancang antarmuka (UI) yang estetis dan pengalaman pengguna (UX) yang intuitif, memastikan navigasi yang mulus.",
+    checklist: "UI/UX Prototyping",
+    iconType: "pen"
+  },
+  {
+    id: "w3",
+    phase: "PHASE 03",
+    title: "Develop",
+    description: "Mengubah desain menjadi kode yang bersih, cepat, responsif, dan mudah dikelola menggunakan teknologi modern.",
+    checklist: "Clean Code & Fast",
+    iconType: "code"
+  },
+  {
+    id: "w4",
+    phase: "PHASE 04",
+    title: "Deliver",
+    description: "Melakukan pengujian akhir, proses rilis (deploy) ke server, dan memastikan semuanya berjalan sempurna.",
+    checklist: "Launch & Support",
+    iconType: "rocket"
+  }
+];
 export default function Home() {
+    const [isExpanded, setIsExpanded] = useState(false);
   const [selectedProject, setSelectedProject] = useState<any>(null);
   return (
     
@@ -103,10 +148,6 @@ export default function Home() {
         <header className="absolute top-0 left-0 w-full flex justify-between items-center px-8 md:px-16 py-8 z-50">
           <div className="text-sm tracking-[0.4em] font-bold uppercase">
             Portfo<span className="text-gray-400">lio</span>
-          </div>
-          <div className="flex items-center gap-4 text-xs tracking-[0.2em] font-medium cursor-pointer hover:text-gray-500 transition-colors">
-            <span>FILTER</span>
-            <Search size={16} strokeWidth={1.5} />
           </div>
         </header>
 
@@ -205,14 +246,14 @@ export default function Home() {
               </svg>
             </div>
 
-            <div className="space-y-6 text-sm md:text-base text-gray-600 leading-relaxed">
-              <p>
-                I am a UI developer. It is a long time fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution.
-              </p>
-              <p>
-                It is a fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution.
-              </p>
-            </div>
+<div className="space-y-6 text-sm md:text-base text-gray-600 leading-relaxed">
+  <p>
+    I am a UI developer and a proud descendant of the Bajo people, the sea nomads whose lives have always been tied to the ocean. Growing up with that heritage taught me to read currents, adapt to change, and keep moving forward, and I carry that mindset into every interface I build.
+  </p>
+  <p>
+    By day I am a Mahasigma, a computer science student who turns late nights, strong coffee, and stubborn curiosity into real projects. I care about clean layouts, honest design, and building things that actually work for the people who use them.
+  </p>
+</div>
 
             {/* ICON SOSMED: MONOKROM & TANPA BINGKAI */}
             <div className="flex gap-6 mt-10">
@@ -246,20 +287,25 @@ export default function Home() {
           variants={fadeInUp}
         >
           <p className="text-xs font-semibold tracking-widest text-gray-400 uppercase mb-4">
-            Practices for product building
+            Notes from a Mahasigma
           </p>
 
           <h2 className="text-3xl md:text-5xl font-bold text-[#222] mb-8 leading-tight tracking-tight">
-            Planning for unplanned work
+            Planning for the unplanned
           </h2>
 
           <div className="space-y-6 text-base md:text-lg text-gray-700 leading-relaxed">
-            <p>There are two types of work. Planned work and unplanned work.</p>
             <p>
-              Planned work are tasks and activities that have been organized and scheduled in advance. This type of work typically happens in projects that tie into roadmaps and larger company goals. Because the work has been planned before, you know what you're trying to do, who's going to work on it, and when they will get started.
+              My ancestors, the Bajo people, lived on the sea. They knew there are two kinds of days: the voyage you planned, and the weather you didn't.
             </p>
             <p>
-              Unplanned work, on the other hand, are issues and emergencies that appear suddenly and seemingly randomly in the form of a bug report, an important feature request, or an outage. Unplanned work happens unexpectedly, but it's not unexpected. You know that there will be bug reports, you just don't know when, where, and in what shape they will come up. The only thing that is certain is that they will appear.
+              Planned work is the voyage. It's the assignment with a deadline, the project with a roadmap, the feature I've sketched out in advance. I know where I'm headed, what I need, and when I'm setting off.
+            </p>
+            <p>
+              Unplanned work is the weather. It shows up as a sudden bug, a last-minute revision, or a server that goes down the night before a deadline. It's never really a surprise, because I know the waves will come. I just don't know when, or how big. The only certainty is that they will arrive.
+            </p>
+            <p>
+              As a student and UI developer, I've learned the Bajo way: don't fight the sea, learn to read it, and leave room in the plan for it.
             </p>
           </div>
 
@@ -286,25 +332,25 @@ export default function Home() {
               </defs>
 
               <circle cx="230" cy="220" r="130" stroke="#d1d5db" strokeWidth="1.5" />
-              <text x="180" y="225" className="text-xs fill-gray-400">Reality</text>
+              <text x="180" y="225" className="text-xs fill-gray-400">The sea</text>
 
               <circle cx="370" cy="220" r="130" stroke="#d1d5db" strokeWidth="1.5" />
-              <text x="410" y="225" className="text-xs fill-gray-400">Issue tracker</text>
+              <text x="410" y="225" className="text-xs fill-gray-400">My task list</text>
 
               <circle cx="370" cy="220" r="130" fill="url(#diagonalHatch)" clipPath="url(#leftCircleClip)" />
 
-              <text x="50" y="90" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">Unplanned</text>
-              <text x="50" y="105" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">issues</text>
+              <text x="50" y="90" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">Sudden</text>
+              <text x="50" y="105" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">waves</text>
               <path d="M 110 120 Q 150 160 170 190" stroke="#9ca3af" strokeWidth="1" fill="none" />
               <polygon points="168,185 173,192 165,195" fill="#9ca3af" />
 
-              <text x="450" y="90" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">Inaccurate</text>
-              <text x="450" y="105" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">and outdated</text>
-              <text x="450" y="120" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">information</text>
+              <text x="450" y="90" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">Outdated</text>
+              <text x="450" y="105" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">charts and</text>
+              <text x="450" y="120" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">old notes</text>
               <path d="M 490 140 Q 450 160 430 190" stroke="#9ca3af" strokeWidth="1" fill="none" />
               <polygon points="432,185 427,192 435,195" fill="#9ca3af" />
 
-              <text x="310" y="470" textAnchor="middle" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">Actionable Items</text>
+              <text x="310" y="470" textAnchor="middle" className="text-[10px] font-medium fill-gray-500 uppercase tracking-wide">Next steps</text>
               <path d="M 310 450 Q 315 390 310 330" stroke="#9ca3af" strokeWidth="1" fill="none" />
               <polygon points="308,335 312,328 316,335" fill="#9ca3af" />
             </svg>
@@ -312,177 +358,168 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* ================= SECTION 4: WORK PROCESS & COMMITMENT ================= */}
-      <section className="w-full py-32 px-6 md:px-12 flex justify-center bg-[#f4f4f4] relative overflow-hidden">
+
+      {/* ================= SECTION 4: WORK PROCESS & COMMITMENT (STACKED CARDS) ================= */}
+          {/* ================= SECTION 4: WORK PROCESS & COMMITMENT (STACKED CARDS) ================= */}
+      <section className="w-full py-32 px-6 md:px-12 flex flex-col items-center justify-center bg-[#f4f4f4] relative overflow-hidden min-h-[800px]">
+        
+        {/* Header Section */}
         <motion.div 
-          className="max-w-7xl w-full relative z-10"
-          variants={staggerContainer}
+          className="text-center mb-12 z-20 relative"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
+          viewport={{ once: true }}
+          variants={fadeInUp}
         >
-          {/* Header Section */}
-          <motion.div variants={fadeInUp} className="text-center mb-20">
-            <p className="text-xs font-bold tracking-[0.3em] text-gray-400 uppercase mb-2">How I Work</p>
-            <h2 className="text-3xl md:text-5xl font-bold text-[#111]">My Commitment & Process</h2>
-            <p className="text-gray-500 mt-4 max-w-2xl mx-auto text-sm md:text-base">
-              Membangun produk digital bukan hanya soal menulis kode, tapi tentang memahami masalah dan memberikan solusi terbaik. Berikut adalah komitmen saya di setiap tahapnya.
-            </p>
-          </motion.div>
-
-          {/* Grid 4 Langkah */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
-            
-            {/* Garis Putus-putus Penghubung (Hanya Desktop) */}
-            <div className="hidden lg:block absolute top-12 left-0 w-full h-[1px] border-t-2 border-dashed border-gray-200 -z-10"></div>
-
-            {/* --- LANGKAH 1: DISCOVERY --- */}
-            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
-                <Lightbulb size={28} strokeWidth={1.5} />
-              </div>
-              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 01</span>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Discovery</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                Mendengarkan ide, memahami visi, dan menganalisis kebutuhan bisnis Anda sebelum menyentuh baris kode pertama.
-              </p>
-              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
-                <CheckCircle2 size={14} className="text-green-500" /> Riset & Analisis
-              </div>
-            </motion.div>
-
-            {/* --- LANGKAH 2: DESIGN --- */}
-            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
-                <PenTool size={28} strokeWidth={1.5} />
-              </div>
-              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 02</span>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Design</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                Merancang antarmuka (UI) yang estetis dan pengalaman pengguna (UX) yang intuitif, memastikan navigasi yang mulus.
-              </p>
-              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
-                <CheckCircle2 size={14} className="text-green-500" /> UI/UX Prototyping
-              </div>
-            </motion.div>
-
-            {/* --- LANGKAH 3: DEVELOP --- */}
-            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
-                <Code2 size={28} strokeWidth={1.5} />
-              </div>
-              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 03</span>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Develop</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                Mengubah desain menjadi kode yang bersih, cepat, responsif, dan mudah dikelola menggunakan teknologi modern.
-              </p>
-              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
-                <CheckCircle2 size={14} className="text-green-500" /> Clean Code & Fast
-              </div>
-            </motion.div>
-
-            {/* --- LANGKAH 4: DELIVER --- */}
-            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
-              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
-                <Rocket size={28} strokeWidth={1.5} />
-              </div>
-              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 04</span>
-              <h3 className="text-xl font-bold text-gray-900 mb-3">Deliver</h3>
-              <p className="text-sm text-gray-600 leading-relaxed mb-6">
-                Melakukan pengujian akhir, proses rilis (deploy) ke server, dan memastikan semuanya berjalan sempurna.
-              </p>
-              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
-                <CheckCircle2 size={14} className="text-green-500" /> Launch & Support
-              </div>
-            </motion.div>
-
-          </div>
-
-          {/* Ornamen UI di Pojok Kanan Bawah */}
-          <div className="absolute -bottom-12 right-0 flex gap-4 text-gray-400">
-            <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:text-black transition-colors">
-              <Maximize2 size={18} className="transform rotate-45" />
-            </div>
-            <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:text-black transition-colors">
-              <Scaling size={18} />
-            </div>
-          </div>
+          <p className="text-xs font-bold tracking-[0.3em] text-gray-400 uppercase mb-2">How I Work</p>
+          <h2 className="text-3xl md:text-5xl font-bold text-[#111]">My Commitment & Process</h2>
+          <p className="text-gray-500 mt-4 max-w-2xl mx-auto text-sm md:text-base mb-6">
+            Membangun produk digital bukan hanya soal menulis kode, tapi tentang memahami masalah dan memberikan solusi terbaik.
+          </p>
+          
+          {/* Tombol Toggle */}
+          <button 
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="px-6 py-2 border border-gray-300 rounded-full text-xs font-bold uppercase tracking-widest text-gray-600 hover:bg-[#111] hover:text-white hover:border-[#111] transition-all duration-300 flex items-center gap-2 mx-auto"
+          >
+            {isExpanded ? "Stack Cards" : "Expand Process"}
+            <ArrowUpRight size={14} className={`transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`} />
+          </button>
         </motion.div>
+
+        {/* Container Animasi Kartu */}
+        <div 
+          className={`relative w-full max-w-7xl flex items-center justify-center transition-all duration-700 ease-in-out ${isExpanded ? 'h-auto mt-12' : 'h-[400px] md:h-[450px]'}`}
+          onClick={() => !isExpanded && setIsExpanded(true)} // Klik area kosong untuk expand
+        >
+          
+          {/* PERBAIKAN: Menggunakan Grid 1x1 (place-items-center) saat belum di-expand */}
+          <div className={`w-full transition-all duration-500 ${isExpanded ? 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 relative' : 'grid grid-cols-1 place-items-center absolute inset-0'}`}>
+            
+            {WORK_PROCESS.map((item, index) => {
+              // Kalkulasi posisi tumpukan ala buku (cascade ke kanan bawah)
+              const stackOffsetX = index * 15; // Geser kanan
+              const stackOffsetY = index * 15; // Geser bawah
+              const stackZIndex = 40 - index; // Kartu index 0 di paling atas
+
+              return (
+                <motion.div 
+                  key={item.id}
+                  layout 
+                  animate={
+                    isExpanded 
+                      ? { x: 0, y: 0, rotate: 0, zIndex: 10 + index } // Menyebar (Grid)
+                      : { x: stackOffsetX, y: stackOffsetY, rotate: 0, zIndex: stackZIndex } // Menumpuk (Stack)
+                  }
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                  onClick={(e) => {
+                    if (!isExpanded) {
+                      e.stopPropagation();
+                      setIsExpanded(true);
+                    }
+                  }}
+                  // PERBAIKAN: Saat stack, paksa semua ada di cell grid yang sama ([grid-area:1/1])
+                  className={`group relative cursor-pointer ${!isExpanded ? 'w-[85%] max-w-[320px] [grid-area:1/1]' : 'w-full'}`}
+                >
+                  {/* EFEK KERTAS TEBAL (STACKED PAPER) */}
+                  <div className="absolute inset-0 bg-gray-300 translate-x-1 translate-y-1 border border-gray-400 transition-transform duration-300 group-hover:translate-x-2 group-hover:translate-y-2" />
+                  
+                  {/* KERTAS UTAMA */}
+                  <div className="relative bg-white border border-gray-400 flex flex-col h-full overflow-hidden transition-all duration-300 shadow-sm group-hover:shadow-xl">
+                    
+                    {/* Bagian Atas: Blok Hitam */}
+                    <div className="bg-[#111111] p-6 text-white relative">
+                      <div className="absolute top-4 right-4 flex gap-1">
+                        <div className="w-1 h-1 bg-white/50"></div>
+                        <div className="w-1 h-1 bg-white/50"></div>
+                        <div className="w-1 h-1 bg-white/50"></div>
+                      </div>
+                      <span className="text-[10px] font-mono tracking-widest text-gray-400 block mb-2">{item.phase}</span>
+                      <h3 className="text-2xl font-bold uppercase tracking-wide">{item.title}</h3>
+                    </div>
+
+                    {/* Bagian Tengah: Kotak Visual */}
+                    <div className="h-24 bg-gray-100 border-y border-gray-300 flex items-center justify-center overflow-hidden grayscale relative">
+                      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: 'linear-gradient(#000 1px, transparent 1px), linear-gradient(90deg, #000 1px, transparent 1px)', backgroundSize: '10px 10px' }}></div>
+                      <div className="relative z-10 text-black">
+                        {item.iconType === 'bulb' && <Lightbulb size={40} strokeWidth={1} />}
+                        {item.iconType === 'pen' && <PenTool size={40} strokeWidth={1} />}
+                        {item.iconType === 'code' && <Code2 size={40} strokeWidth={1} />}
+                        {item.iconType === 'rocket' && <Rocket size={40} strokeWidth={1} />}
+                      </div>
+                    </div>
+
+                    {/* Bagian Bawah: Teks & Checklist */}
+                    <div className="p-6 flex flex-col flex-grow bg-white relative">
+                      <div className="absolute bottom-4 right-4 text-[8px] font-mono text-gray-300">{index + 1}.0</div>
+                      <p className="text-sm text-gray-600 leading-relaxed mb-6 flex-grow font-light">
+                        {item.description}
+                      </p>
+                      <div className="flex items-start gap-2 border-t border-black pt-4">
+                        <div className="w-4 h-4 border border-black flex items-center justify-center shrink-0 mt-0.5">
+                           <Check size={10} className="text-black" strokeWidth={3} />
+                        </div>
+                        <span className="text-xs font-bold uppercase tracking-widest text-black">{item.checklist}</span>
+                      </div>
+                    </div>
+
+                  </div>
+                </motion.div>
+              )
+            })}
+          </div>
+        </div>
       </section>
-      {/* ================= SECTION 5: EDITORIAL COLUMNS ================= */}
+           {/* ================= SECTION 5: EDITORIAL COLUMNS ================= */}
       <section id="works" className="w-full py-32 px-6 md:px-12 bg-[#f4f4f4] flex justify-center">
         <div className="max-w-7xl w-full">
           
           {/* Grid 5 Kolom dengan Garis Pemisah */}
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 border-t border-b border-gray-300 divide-y md:divide-y-0 lg:divide-x divide-gray-300">
             
-            {PROJECTS.map((project, index) => (
-              <motion.div
-                key={project.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="group relative flex flex-col pt-10 pb-12 px-6 lg:px-8 hover:bg-gray-50/50 transition-colors cursor-pointer"
-              >
-                
-                {/* Area Ikon (SVG Kustom) */}
-                <div className="h-32 mb-8 flex items-start">
-                  {project.icon === "circle-thick" && (
-                    <div className="relative w-16 h-16 rounded-full border-[6px] border-black"></div>
-                  )}
+            {PROJECTS.map((project, index) => {
+              const Icon = project.icon;
+              return (
+                <motion.a
+                  key={project.id}
+                  href={project.repo}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  className="group relative flex flex-col pt-10 pb-12 px-6 lg:px-8 hover:bg-gray-50/50 transition-colors cursor-pointer"
+                >
                   
-                  {project.icon === "sun" && (
-                    <div className="relative w-20 h-20 flex items-center justify-center">
-                      <div className="w-16 h-16 rounded-full border-[6px] border-black"></div>
-                      {/* Garis bawah */}
-                      <div className="absolute bottom-0 flex flex-col gap-1 w-12">
-                        <div className="h-[2px] bg-black w-full"></div>
-                        <div className="h-[2px] bg-black w-full"></div>
-                        <div className="h-[2px] bg-black w-3/4 mx-auto"></div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {project.icon === "cluster" && (
-                    <div className="relative w-16 h-16 flex items-center justify-center">
-                      <div className="w-4 h-4 rounded-full border-[2px] border-black absolute"></div>
-                      {[...Array(8)].map((_, i) => (
-                        <div 
-                          key={i} 
-                          className="w-3 h-3 rounded-full border-[1.5px] border-black absolute"
-                          style={{ transform: `rotate(${i * 45}deg) translateY(-20px)` }}
-                        />
-                      ))}
-                    </div>
-                  )}
+                  {/* Area Ikon (Lucide, sesuai tema project) */}
+                  <div className="h-32 mb-8 flex items-start">
+                    <Icon
+                      size={64}
+                      strokeWidth={1.25}
+                      className="text-black group-hover:scale-110 transition-transform duration-300 origin-top-left"
+                    />
+                  </div>
 
-                  {project.icon === "dots" && (
-                    <div className="relative w-16 h-16 flex flex-col items-start justify-start gap-2">
-                      <div className="flex gap-2"><div className="w-3 h-3 rounded-full border border-black"></div><div className="w-3 h-3 rounded-full border border-black"></div></div>
-                      <div className="flex gap-2 ml-4"><div className="w-3 h-3 rounded-full border border-black"></div><div className="w-3 h-3 rounded-full border border-black"></div></div>
-                      <div className="flex gap-2 ml-1"><div className="w-3 h-3 rounded-full border border-black"></div><div className="w-3 h-3 rounded-full border border-black"></div></div>
-                    </div>
-                  )}
+                  {/* Judul */}
+                  <h3 className="text-2xl font-semibold text-[#111] leading-tight mb-4 whitespace-pre-line group-hover:text-black transition-colors">
+                    {project.title}
+                  </h3>
 
-                  {project.icon === "circle-open" && (
-                    <div className="relative w-16 h-16 rounded-full border-[6px] border-black flex items-center justify-center">
-                       <div className="w-3 h-3 rounded-full bg-[#f4f4f4] absolute -bottom-2 -right-2 border-2 border-black"></div>
-                    </div>
-                  )}
-                </div>
+                  {/* Deskripsi */}
+                  <p className="text-sm text-gray-500 leading-relaxed font-light mb-6">
+                    {project.description}
+                  </p>
 
-                {/* Judul */}
-                <h3 className="text-2xl font-semibold text-[#111] leading-tight mb-4 whitespace-pre-line group-hover:text-black transition-colors">
-                  {project.title}
-                </h3>
-
-                {/* Deskripsi */}
-                <p className="text-sm text-gray-500 leading-relaxed font-light">
-                  {project.description}
-                </p>
-              </motion.div>
-            ))}
+                  {/* Link Repo */}
+                  <span className="mt-auto inline-flex items-center gap-2 text-xs font-semibold text-gray-800 group-hover:text-black transition-colors">
+                    <GitBranch size={14} />
+                    View Repository
+                    <ExternalLink size={12} className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                  </span>
+                </motion.a>
+              );
+            })}
           </div>
         </div>
       </section>
