@@ -70,14 +70,14 @@ const PROJECTS = [
     title: "Leeyah\nAI",
     description: "An academic journal search engine paired with a research notebook. Built with Next.js, Supabase, and TipTap.",
     icon: BookOpen,
-    repo: "https://github.com/NissanEx/leeyah-ai", // GANTI
+    repo: "https://leeyah.my.id/", // GANTI
   },
   {
     id: "p2",
     title: "Komiknet\nComic Reader",
     description: "A comic reading website powered by the MangaDex API, built with Next.js and deployed on Cloudflare.",
     icon: Library,
-    repo: "https://github.com/NissanEx/komiknet", // GANTI
+    repo: "https://www.komiknet.site/", // GANTI
   },
   {
     id: "p3",
@@ -98,7 +98,7 @@ const PROJECTS = [
     title: "ExSan\nVillage Platform",
     description: "A web system for the Kalumbatan village government, built to make village administration more accessible.",
     icon: Landmark,
-    repo: "https://github.com/NissanEx/exsan", // GANTI
+    repo: "https://kalumbatan.vercel.app/", // GANTI
   },
 ];
 const WORK_PROCESS = [
@@ -514,7 +514,7 @@ export default function Home() {
                   {/* Link Repo */}
                   <span className="mt-auto inline-flex items-center gap-2 text-xs font-semibold text-gray-800 group-hover:text-black transition-colors">
                     <GitBranch size={14} />
-                    View Repository
+                    Link Site
                     <ExternalLink size={12} className="opacity-0 -translate-x-1 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                   </span>
                 </motion.a>
