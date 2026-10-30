@@ -5,8 +5,8 @@ import "./globals.css";
 const montserrat = Montserrat({ subsets: ["latin"], weight: ["300", "400", "500", "600", "700"] });
 
 export const metadata: Metadata = {
-  title: "Portofolio | John Doe",
-  description: "Website portofolio minimalis",
+  title: "Sandy Wiraabdy",
+  description: "Sandy di sini",
 };
 
 export default function RootLayout({

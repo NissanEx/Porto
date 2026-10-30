@@ -1,7 +1,8 @@
 "use client";
-
+import { useState } from "react"; 
 import Image from "next/image";
 import dynamic from 'next/dynamic';
+
 
 // Paksa komponen ini hanya di-render di browser (client-side)
 const NodeGraph = dynamic(() => import("@/components/NodeGraph"), {
@@ -14,7 +15,7 @@ const NodeGraph = dynamic(() => import("@/components/NodeGraph"), {
     </div>
   ),
 });import Footer from "@/components/Footer";
-import { motion, Variants } from "framer-motion";
+import { motion, Variants, AnimatePresence } from "framer-motion"; 
 import { 
   Layers, 
   Search, 
@@ -22,12 +23,17 @@ import {
   Globe, 
   Send, 
   Mail, 
-  ArrowUp,
+   ArrowUpRight,
   Pencil, 
   X, 
   Check, 
   Maximize2, 
-  Scaling 
+  Scaling,     // <-- TAMBAHKAN KOMA DI SINI
+  Lightbulb,   // Untuk Discovery
+  PenTool,     // Untuk Design
+  Code2,       // Untuk Develop
+  Rocket,      // Untuk Deliver
+  CheckCircle2 // Untuk Komitmen
 } from "lucide-react";
 
 // Variabel Animasi
@@ -53,9 +59,42 @@ const staggerContainer: Variants = {
     transition: { staggerChildren: 0.2 }
   }
 };
-
+const PROJECTS = [
+  {
+    id: "p1",
+    title: "Intellectual\nRigour",
+    description: "We believe in the power of deep thinking and insightful judgement. We apply our expertise and knowledge to solve complex issues with a long-term vision.",
+    icon: "circle-thick",
+  },
+  {
+    id: "p2",
+    title: "Courageous\nCreativity",
+    description: "We believe that transformation takes courage to make ideas a reality. We are the doers, the bold leaders, disruptors and innovators doing things differently.",
+    icon: "sun",
+  },
+  {
+    id: "p3",
+    title: "Catalytic\nCollaboration",
+    description: "We believe in connecting diverse thinkers to create breakthrough ideas. Real systemic change can only be achieved by joining forces and forging new paths together.",
+    icon: "cluster",
+  },
+  {
+    id: "p4",
+    title: "Relentless\nTenacity",
+    description: "We believe in the dedicated and determined pursuit of a goal. We combine the perseverance, resilience and grit to get us there.",
+    icon: "dots",
+  },
+  {
+    id: "p5",
+    title: "Thoughtful\nTransformation",
+    description: "We believe our impact must be significant and measurable, directly tied to outcomes. We manifest our leadership through our exemplary, ethical behaviours and business.",
+    icon: "circle-open",
+  },
+];
 export default function Home() {
+  const [selectedProject, setSelectedProject] = useState<any>(null);
   return (
+    
     <main className="w-full bg-[#f4f4f4] text-[#111] overflow-x-hidden">
       
       {/* ================= SECTION 1: HERO ================= */}
@@ -194,13 +233,6 @@ export default function Home() {
 
           </motion.div>
         </div>
-
-        <div className="w-full flex justify-center pb-24 bg-[#f4f4f4] mt-16">
-          <a href="#" className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-gray-500 hover:text-black transition-colors">
-            <ArrowUp size={16} />
-            Back to Top
-          </a>
-        </div>
       </section>
 
 
@@ -280,103 +312,298 @@ export default function Home() {
         </motion.div>
       </section>
 
-
-      {/* ================= SECTION 4: WORKFLOW ================= */}
-      <section className="w-full py-32 px-6 md:px-12 flex justify-center">
+      {/* ================= SECTION 4: WORK PROCESS & COMMITMENT ================= */}
+      <section className="w-full py-32 px-6 md:px-12 flex justify-center bg-[#f4f4f4] relative overflow-hidden">
         <motion.div 
-          className="max-w-7xl w-full relative"
+          className="max-w-7xl w-full relative z-10"
           variants={staggerContainer}
           initial="hidden"
           whileInView="visible"
           viewport={{ once: true, margin: "-100px" }}
         >
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 lg:gap-8 items-start">
+          {/* Header Section */}
+          <motion.div variants={fadeInUp} className="text-center mb-20">
+            <p className="text-xs font-bold tracking-[0.3em] text-gray-400 uppercase mb-2">How I Work</p>
+            <h2 className="text-3xl md:text-5xl font-bold text-[#111]">My Commitment & Process</h2>
+            <p className="text-gray-500 mt-4 max-w-2xl mx-auto text-sm md:text-base">
+              Membangun produk digital bukan hanya soal menulis kode, tapi tentang memahami masalah dan memberikan solusi terbaik. Berikut adalah komitmen saya di setiap tahapnya.
+            </p>
+          </motion.div>
+
+          {/* Grid 4 Langkah */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
             
-            {/* --- KOLOM 1 --- */}
-            <motion.div variants={fadeInUp} className="flex flex-col w-full">
-              <p className="text-sm font-medium text-gray-800 mb-4">Note with content</p>
-              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm relative group h-full flex flex-col">
-                <p className="text-[11px] text-gray-400 mb-3">Last updated by <span className="text-black font-medium">Nick</span> on Nov 1</p>
-                <button className="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors opacity-0 group-hover:opacity-100">
-                  <Pencil size={16} />
-                </button>
-                <div className="space-y-3 text-xs text-gray-600 leading-relaxed flex-grow">
-                  <p>The EV charging station project is nearing its operational phase. This initiative aligns with broader environmental goals and aims to provide residents and visitors with reliable access to EV charging services.</p>
-                  <p>As the project progresses, key infrastructure elements are being finalized to ensure that the station meets both local and national standards for safety and efficiency.</p>
-                  <p>Amon Smith, the Operational Manager for the Austin station, is overseeing the preparations for the launch.</p>
-                </div>
+            {/* Garis Putus-putus Penghubung (Hanya Desktop) */}
+            <div className="hidden lg:block absolute top-12 left-0 w-full h-[1px] border-t-2 border-dashed border-gray-200 -z-10"></div>
+
+            {/* --- LANGKAH 1: DISCOVERY --- */}
+            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
+                <Lightbulb size={28} strokeWidth={1.5} />
+              </div>
+              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 01</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Discovery</h3>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                Mendengarkan ide, memahami visi, dan menganalisis kebutuhan bisnis Anda sebelum menyentuh baris kode pertama.
+              </p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
+                <CheckCircle2 size={14} className="text-green-500" /> Riset & Analisis
               </div>
             </motion.div>
 
-            {/* --- KOLOM 2 --- */}
-            <motion.div variants={fadeInUp} className="flex flex-col w-full relative">
-              <div className="hidden lg:block absolute -left-10 top-1/2 -translate-y-1/2 w-8 h-[1px] bg-gray-300">
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t border-r border-gray-300 rotate-45"></div>
+            {/* --- LANGKAH 2: DESIGN --- */}
+            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
+                <PenTool size={28} strokeWidth={1.5} />
               </div>
-              <p className="text-sm font-medium text-gray-800 mb-4">Note editing...</p>
-              <div className="bg-white border-2 border-gray-400 rounded-xl p-5 shadow-md relative h-full flex flex-col">
-                <p className="text-[11px] text-gray-400 mb-3">Last updated by <span className="text-black font-medium">Nick</span> on Nov 1</p>
-                <div className="space-y-3 text-xs text-gray-600 leading-relaxed flex-grow">
-                  <p>The EV charging station project is nearing its operational phase. This initiative aligns with broader environmental goals and aims to provide residents and visitors with reliable access to EV charging services.</p>
-                  <p>As the project progresses, key infrastructure elements are being finalized to ensure that the station meets both local and national standards for safety and efficiency.</p>
-                  <p>Amon Smith, the Operational Manager for the Austin station, is overseeing the preparations for the launch.</p>
-                </div>
-                <div className="flex justify-end gap-2 mt-6">
-                  <button className="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors">Cancel</button>
-                  <button className="px-3 py-1.5 text-xs font-medium text-white bg-[#111] rounded-md hover:bg-gray-800 transition-colors">Update note</button>
-                </div>
-              </div>
-              <div className="mt-4 bg-white border border-gray-100 shadow-lg rounded-lg p-3 flex items-start gap-3 w-full">
-                <div className="mt-0.5 w-5 h-5 rounded-full bg-red-100 flex items-center justify-center shrink-0">
-                  <X size={12} className="text-red-500" />
-                </div>
-                <div className="flex-grow">
-                  <p className="text-xs font-bold text-gray-800">Failed to update note</p>
-                  <p className="text-[11px] text-gray-500 mt-0.5">There was an error updating note. Please try again.</p>
-                </div>
-                <button className="text-gray-400 hover:text-black mt-1 shrink-0"><X size={14} /></button>
+              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 02</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Design</h3>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                Merancang antarmuka (UI) yang estetis dan pengalaman pengguna (UX) yang intuitif, memastikan navigasi yang mulus.
+              </p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
+                <CheckCircle2 size={14} className="text-green-500" /> UI/UX Prototyping
               </div>
             </motion.div>
 
-            {/* --- KOLOM 3 --- */}
-            <motion.div variants={fadeInUp} className="flex flex-col w-full relative">
-              <div className="hidden lg:block absolute -left-10 top-1/2 -translate-y-1/2 w-8 h-[1px] bg-gray-300">
-                <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 border-t border-r border-gray-300 rotate-45"></div>
+            {/* --- LANGKAH 3: DEVELOP --- */}
+            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
+                <Code2 size={28} strokeWidth={1.5} />
               </div>
-              <p className="text-sm font-medium text-gray-800 mb-4">Note updated</p>
-              <div className="bg-white border border-gray-200 rounded-xl p-5 shadow-sm relative h-full flex flex-col">
-                <p className="text-[11px] text-gray-400 mb-3">Last updated by <span className="text-black font-medium">Nick</span> on Nov 12</p>
-                <div className="space-y-4 text-xs text-gray-600 leading-relaxed flex-grow">
-                  <p className="font-medium text-black">Austin Station A1 has been launched.</p>
-                  <p>Operational Manager:<br />Amon Smith, <span className="text-black font-medium">+1 123-456-7890</span></p>
-                </div>
-              </div>
-              <div className="mt-4 bg-white border border-gray-100 shadow-lg rounded-lg p-3 flex items-start gap-3 w-full">
-                <div className="mt-0.5 w-5 h-5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
-                  <Check size={12} className="text-green-600" />
-                </div>
-                <div className="flex-grow">
-                  <p className="text-xs font-bold text-gray-800">Note updated</p>
-                  <p className="text-[11px] text-gray-500 mt-0.5">Note was updated successfully.</p>
-                </div>
-                <button className="text-gray-400 hover:text-black mt-1 shrink-0"><X size={14} /></button>
+              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 03</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Develop</h3>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                Mengubah desain menjadi kode yang bersih, cepat, responsif, dan mudah dikelola menggunakan teknologi modern.
+              </p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
+                <CheckCircle2 size={14} className="text-green-500" /> Clean Code & Fast
               </div>
             </motion.div>
+
+            {/* --- LANGKAH 4: DELIVER --- */}
+            <motion.div variants={fadeInUp} className="relative group bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300">
+              <div className="w-16 h-16 bg-[#f4f4f4] rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-[#111] group-hover:text-white transition-all duration-300">
+                <Rocket size={28} strokeWidth={1.5} />
+              </div>
+              <span className="text-xs font-bold text-gray-400 mb-2 block">PHASE 04</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-3">Deliver</h3>
+              <p className="text-sm text-gray-600 leading-relaxed mb-6">
+                Melakukan pengujian akhir, proses rilis (deploy) ke server, dan memastikan semuanya berjalan sempurna.
+              </p>
+              <div className="flex items-center gap-2 text-xs font-semibold text-gray-800">
+                <CheckCircle2 size={14} className="text-green-500" /> Launch & Support
+              </div>
+            </motion.div>
+
           </div>
 
-          <div className="absolute -bottom-16 right-0 flex gap-4 text-gray-800">
-            <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50">
-              <Maximize2 size={20} className="transform rotate-45" />
+          {/* Ornamen UI di Pojok Kanan Bawah */}
+          <div className="absolute -bottom-12 right-0 flex gap-4 text-gray-400">
+            <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:text-black transition-colors">
+              <Maximize2 size={18} className="transform rotate-45" />
             </div>
-            <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50">
-              <Scaling size={20} />
+            <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center cursor-pointer hover:bg-gray-50 hover:text-black transition-colors">
+              <Scaling size={18} />
             </div>
           </div>
         </motion.div>
       </section>
+      {/* ================= SECTION 5: EDITORIAL COLUMNS ================= */}
+      <section id="works" className="w-full py-32 px-6 md:px-12 bg-[#f4f4f4] flex justify-center">
+        <div className="max-w-7xl w-full">
+          
+          {/* Grid 5 Kolom dengan Garis Pemisah */}
+          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 border-t border-b border-gray-300 divide-y md:divide-y-0 lg:divide-x divide-gray-300">
+            
+            {PROJECTS.map((project, index) => (
+              <motion.div
+                key={project.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1, duration: 0.5 }}
+                className="group relative flex flex-col pt-10 pb-12 px-6 lg:px-8 hover:bg-gray-50/50 transition-colors cursor-pointer"
+              >
+                
+                {/* Area Ikon (SVG Kustom) */}
+                <div className="h-32 mb-8 flex items-start">
+                  {project.icon === "circle-thick" && (
+                    <div className="relative w-16 h-16 rounded-full border-[6px] border-black"></div>
+                  )}
+                  
+                  {project.icon === "sun" && (
+                    <div className="relative w-20 h-20 flex items-center justify-center">
+                      <div className="w-16 h-16 rounded-full border-[6px] border-black"></div>
+                      {/* Garis bawah */}
+                      <div className="absolute bottom-0 flex flex-col gap-1 w-12">
+                        <div className="h-[2px] bg-black w-full"></div>
+                        <div className="h-[2px] bg-black w-full"></div>
+                        <div className="h-[2px] bg-black w-3/4 mx-auto"></div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {project.icon === "cluster" && (
+                    <div className="relative w-16 h-16 flex items-center justify-center">
+                      <div className="w-4 h-4 rounded-full border-[2px] border-black absolute"></div>
+                      {[...Array(8)].map((_, i) => (
+                        <div 
+                          key={i} 
+                          className="w-3 h-3 rounded-full border-[1.5px] border-black absolute"
+                          style={{ transform: `rotate(${i * 45}deg) translateY(-20px)` }}
+                        />
+                      ))}
+                    </div>
+                  )}
 
+                  {project.icon === "dots" && (
+                    <div className="relative w-16 h-16 flex flex-col items-start justify-start gap-2">
+                      <div className="flex gap-2"><div className="w-3 h-3 rounded-full border border-black"></div><div className="w-3 h-3 rounded-full border border-black"></div></div>
+                      <div className="flex gap-2 ml-4"><div className="w-3 h-3 rounded-full border border-black"></div><div className="w-3 h-3 rounded-full border border-black"></div></div>
+                      <div className="flex gap-2 ml-1"><div className="w-3 h-3 rounded-full border border-black"></div><div className="w-3 h-3 rounded-full border border-black"></div></div>
+                    </div>
+                  )}
 
-      {/* ================= SECTION 5: MIND MAP ================= */}
+                  {project.icon === "circle-open" && (
+                    <div className="relative w-16 h-16 rounded-full border-[6px] border-black flex items-center justify-center">
+                       <div className="w-3 h-3 rounded-full bg-[#f4f4f4] absolute -bottom-2 -right-2 border-2 border-black"></div>
+                    </div>
+                  )}
+                </div>
+
+                {/* Judul */}
+                <h3 className="text-2xl font-semibold text-[#111] leading-tight mb-4 whitespace-pre-line group-hover:text-black transition-colors">
+                  {project.title}
+                </h3>
+
+                {/* Deskripsi */}
+                <p className="text-sm text-gray-500 leading-relaxed font-light">
+                  {project.description}
+                </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= MODAL DETAIL PROJECT (FLOATING EDITORIAL) ================= */}
+      <AnimatePresence>
+        {selectedProject && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-8 bg-black/60 backdrop-blur-sm"
+            onClick={() => setSelectedProject(null)}
+          >
+            <motion.div
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+              onClick={(e) => e.stopPropagation()}
+              className="bg-[#f4f4f4] w-full max-w-6xl max-h-[90vh] overflow-y-auto shadow-2xl relative border border-gray-300 flex flex-col md:flex-row rounded-none"
+            >
+              
+              {/* --- KOLOM KIRI: KONTEN TEKS --- */}
+              <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-between">
+                <div>
+                  {/* Kategori */}
+                  <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-gray-400 mb-2">
+                    {selectedProject.category}
+                  </p>
+                  
+                  {/* Judul Besar */}
+                  <h2 className="text-4xl md:text-6xl font-black text-[#111] leading-[1.1] mb-8 uppercase tracking-tighter">
+                    {selectedProject.title}
+                  </h2>
+
+                  {/* Deskripsi */}
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed mb-12 max-w-md">
+                    {selectedProject.description}
+                  </p>
+
+                  {/* Metadata (Garis & Teks) */}
+                  <div className="grid grid-cols-2 gap-8 border-t border-gray-300 pt-6 mb-12">
+                    <div>
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-2">Launch Year</p>
+                      <p className="text-2xl font-light text-[#111]">{selectedProject.year}</p>
+                    </div>
+                    <div>
+                      <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-2">Project Code</p>
+                      <p className="text-2xl font-light text-[#111]">{selectedProject.code}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Tech Stack & Tombol */}
+                <div className="border-t border-gray-300 pt-6">
+                  <p className="text-[9px] font-bold uppercase tracking-widest text-gray-400 mb-3">Technologies</p>
+                  <div className="flex flex-wrap gap-2 mb-8">
+                    {selectedProject.tags.map((tag: string) => (
+                      <span key={tag} className="px-3 py-1 text-[10px] font-bold uppercase tracking-wider border border-gray-300 text-gray-800">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  
+                  <div className="flex gap-4">
+                    <button className="flex-1 bg-[#111] text-white py-3 rounded-none font-bold text-xs uppercase tracking-widest hover:bg-gray-800 transition-colors">
+                      Visit Website
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* --- KOLOM KANAN: VISUAL / GAMBAR --- */}
+              <div className="w-full md:w-1/2 bg-white border-l border-gray-300 relative min-h-[300px] md:min-h-full flex items-center justify-center p-8 overflow-hidden">
+                {/* Ornamen Blueprint/Teknis (Pengganti Gambar) */}
+                <div className="absolute inset-0 opacity-10 pointer-events-none">
+                  <svg viewBox="0 0 100 100" className="w-full h-full" preserveAspectRatio="none">
+                    <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+                      <path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" strokeWidth="0.5"/>
+                    </pattern>
+                    <rect width="100" height="100" fill="url(#grid)" />
+                  </svg>
+                </div>
+
+                {/* Garis Teknis Tengah */}
+                <div className="relative z-10 flex flex-col items-center">
+                   <svg width="200" height="300" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg" className="text-black/80">
+                      <path d="M100 10 L100 290" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4"/>
+                      <path d="M40 50 L160 50" stroke="currentColor" strokeWidth="1"/>
+                      <path d="M50 100 L150 100" stroke="currentColor" strokeWidth="1"/>
+                      <circle cx="100" cy="150" r="40" stroke="currentColor" strokeWidth="1"/>
+                      <circle cx="100" cy="150" r="10" fill="currentColor"/>
+                      <path d="M60 200 L140 200" stroke="currentColor" strokeWidth="1"/>
+                      <path d="M80 250 L120 250" stroke="currentColor" strokeWidth="1"/>
+                      <text x="110" y="55" fill="currentColor" fontSize="8" fontFamily="monospace">SYS.01</text>
+                      <text x="110" y="105" fill="currentColor" fontSize="8" fontFamily="monospace">CORE</text>
+                      <text x="110" y="205" fill="currentColor" fontSize="8" fontFamily="monospace">DATA</text>
+                   </svg>
+                </div>
+                
+                {/* Overlay Teks Vertikal */}
+                <div className="absolute bottom-8 right-8 z-10">
+                  <p className="text-[9px] font-bold text-gray-400 uppercase tracking-widest" style={{ writingMode: "vertical-rl" }}>
+                    Design & Development
+                  </p>
+                </div>
+              </div>
+
+              {/* Tombol Close (Pojok Kanan Atas) */}
+              <button 
+                onClick={() => setSelectedProject(null)}
+                className="absolute top-6 right-6 w-10 h-10 bg-[#f4f4f4] md:bg-transparent border border-gray-300 flex items-center justify-center hover:bg-gray-200 transition-colors z-50 rounded-none"
+              >
+                <X size={20} className="text-gray-600" />
+              </button>
+
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
       <section className="w-full relative">
         <motion.div 
           className="w-full text-center pt-20 pb-8"

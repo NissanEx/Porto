@@ -86,10 +86,9 @@ function CustomNode({ data }: NodeProps) {
     ? { y: 0, scale: 1.15, rotate: 0 } 
     : { y: [0, -6, 0], rotate: [-1.5, 1.5, -1.5], scale: [1, 1.02, 1] };
 
-  const floatTransition = React.useMemo(() => {
+  // PERBAIKAN: Menggunakan useMemo untuk Math.random agar tidak crash di Cloudflare
+  const floatTransition = useMemo(() => {
     if (selected) return { duration: 0.4, type: "spring" as const };
-    
-    // Angka acak dihitung sekali saja per node
     const delay1 = Math.random() * 2;
     const delay2 = Math.random() * 2;
     const delay3 = Math.random() * 2;
@@ -126,9 +125,6 @@ function CustomNode({ data }: NodeProps) {
 
 const nodeTypes = { custom: CustomNode };
 
-// ==========================================
-// ALGORITMA TATA LETAK (DIPERLEBAR)
-// ==========================================
 const getRadialLayout = (centerNodeId: string) => {
   const adj: Record<string, string[]> = {};
   initialNodes.forEach(n => { adj[n.id] = []; });
@@ -158,10 +154,9 @@ const getRadialLayout = (centerNodeId: string) => {
     nodesByLevel[lvl].push(n);
   });
 
-  // PERUBAHAN: Memperbesar titik tengah dan jarak antar ring
   const CENTER_X = 500;
   const CENTER_Y = 400;
-  const RADIUS_STEP = 250; // Diperlebar dari 170 menjadi 250
+  const RADIUS_STEP = 250;
 
   return initialNodes.map(n => {
     const lvl = levels[n.id] !== undefined ? levels[n.id] : 9;
@@ -266,10 +261,12 @@ function NodeGraph() {
 
   return (
     <SelectionContext.Provider value={selectedId}>
-      <div className="relative w-full max-w-6xl mx-auto h-[700px] flex flex-col md:flex-row bg-[#f4f4f4] overflow-hidden">
+      {/* PERBAIKAN LAYOUT: Menggunakan h-auto di mobile agar tidak tumpang tindih */}
+      <div className="relative w-full max-w-6xl mx-auto flex flex-col md:flex-row bg-[#f4f4f4] md:h-[700px] overflow-hidden">
         
-        {/* KANVAS GRAPH (KIRI) */}
-        <div className="w-full h-[50%] md:h-full md:flex-1 relative z-0">
+        {/* KANVAS GRAPH (ATAS DI MOBILE) */}
+        {/* Tinggi dibuat fix 400px di mobile agar tidak bentrok */}
+        <div className="w-full h-[400px] md:h-full md:flex-1 relative z-0">
           <ReactFlow
             nodes={nodes} edges={edges} nodeTypes={nodeTypes}
             onNodeClick={onNodeClick} onNodesChange={onNodesChange}
@@ -278,15 +275,15 @@ function NodeGraph() {
             panOnDrag={false} panOnScroll={false} zoomOnScroll={false} zoomOnPinch={false} zoomOnDoubleClick={false}
             preventScrolling={false} 
             fitView 
-            // PERUBAHAN: Padding ditambah agar tidak mepet pinggir, maxZoom diturunkan agar tidak zoom-in berlebihan
             fitViewOptions={{ padding: 0.35, maxZoom: 0.9 }} 
             proOptions={{ hideAttribution: true }} 
             style={{ background: 'transparent' }}
           />
         </div>
 
-        {/* AREA 3-LAYER CARD (KANAN) */}
-        <div className="relative w-full md:w-[480px] h-[50%] md:h-full flex justify-center items-center pointer-events-none z-10">
+        {/* AREA CARD (BAWAH DI MOBILE) */}
+        {/* py-16 memberikan ruang agar card tidak mepet ke graph */}
+        <div className="relative w-full md:w-[480px] py-16 md:py-0 md:h-full flex justify-center items-center pointer-events-none z-10">
           
           <AnimatePresence mode="wait">
             <motion.div
@@ -295,7 +292,8 @@ function NodeGraph() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="relative w-[360px] h-[520px] pointer-events-auto"
+              // PERBAIKAN: Diperkecil sedikit di HP (scale-90) agar tidak kepotong layar
+              className="relative w-[360px] h-[520px] pointer-events-auto scale-90 sm:scale-100 origin-top"
             >
               
               {/* LAYER 1: Gambar Belakang Kiri Atas */}
